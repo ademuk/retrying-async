@@ -36,8 +36,7 @@ def is_exception(obj):
     )
 
 
-@asyncio.coroutine
-def callback(attempt, exc, args, kwargs, delay=0.5, *, loop):
+async def callback(attempt, exc, args, kwargs, delay=0.5, *, loop):
     yield from asyncio.sleep(delay, loop=loop)
 
     return retry
@@ -67,8 +66,7 @@ def retry(
     """
     def wrapper(fn):
         @wraps(fn)
-        @asyncio.coroutine
-        def wrapped(*fn_args, **fn_kwargs):
+        async def wrapped(*fn_args, **fn_kwargs):
             _loop = asyncio.get_event_loop()
             if (
                     timeout is not None and
